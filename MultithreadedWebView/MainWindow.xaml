@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MultithreadedWebView"
         mc:Ignorable="d"
-        Title="Multithreaded Web Browser" FontSize="16" Height="600" Width="800" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="Multi-threaded WebView Sample" FontSize="16" Height="600" Width="800" Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
