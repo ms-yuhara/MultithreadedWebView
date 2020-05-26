@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30119.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultithreadedWebView", "MultithreadedWebView\MultithreadedWebView.csproj", "{54A3119A-4E5A-4F24-9455-E04628CB54F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{54A3119A-4E5A-4F24-9455-E04628CB54F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54A3119A-4E5A-4F24-9455-E04628CB54F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54A3119A-4E5A-4F24-9455-E04628CB54F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54A3119A-4E5A-4F24-9455-E04628CB54F5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B443A641-8F4B-4302-9F08-82318F3535E7}
+	EndGlobalSection
+EndGlobal
