@@ -247,13 +247,15 @@ namespace MultithreadedWebView
 
         private void BrowserWindow_DocumentTitleChanged(object sender, DocumentTitleChangedEventArgs e)
         {
-            this.BrowserTabControl.Dispatcher.BeginInvoke(new Action(() =>
-            {
+            this.BrowserTabControl.Dispatcher.BeginInvoke(new Action(() => {
                 var item = this.BrowserTabControl.Items[e.TabIndex] as TabItem;
 
                 if (item != null) {
                     item.Header = e.Title;
-                    this.Url.Text = e.Url;
+
+                    if (sender.Equals(this.ActiveBrowserWindow)) {
+                        this.Url.Text = e.Url;
+                    }
                 }
             }));
         }
