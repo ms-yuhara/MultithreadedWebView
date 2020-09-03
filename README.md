@@ -1,6 +1,6 @@
 ﻿# Multi-threaded WebView2 Sample
 
-This is a sample WPF application that handles multiple WebView2 (Chromium) instances in a multi-threaded, multi-tabbed container, and also implements the option to switch WebView2 to WebBrowser (Trident).
+This is a sample WPF application that handles multiple WebView2 (Chromium) instances in a multi-tabbed container, and also implements the option to switch WebView2 to WebBrowser (Trident).
 
 ![WebView2 in WPF](mtwv-chromium.png)
 
