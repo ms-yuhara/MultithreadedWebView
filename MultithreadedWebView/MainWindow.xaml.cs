@@ -130,32 +130,44 @@ namespace MultithreadedWebView
 
                 BrowserWindow child = null;
 
-                System.Threading.Thread thread = new System.Threading.Thread(() =>
-                {
-                    System.Threading.SynchronizationContext.SetSynchronizationContext(
-                        new System.Windows.Threading.DispatcherSynchronizationContext(
-                            System.Windows.Threading.Dispatcher.CurrentDispatcher));
+                if (!modern) {
+                    System.Threading.Thread thread = new System.Threading.Thread(() =>
+                    {
+                        System.Threading.SynchronizationContext.SetSynchronizationContext(
+                            new System.Windows.Threading.DispatcherSynchronizationContext(
+                                System.Windows.Threading.Dispatcher.CurrentDispatcher));
 
-                    lock (SyncObject) {
-                        child = CreateBrowser(modern);
-                        child.Closed += (sender, e) => System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvokeShutdown(System.Windows.Threading.DispatcherPriority.Background);
-                        child.Show();
+                        lock (SyncObject) {
+                            child = CreateBrowser(modern);
+                            child.Closed += (sender, e) => System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvokeShutdown(System.Windows.Threading.DispatcherPriority.Background);
+                            child.Show();
 
-                        var hWndChild = new System.Windows.Interop.WindowInteropHelper(child).Handle;
+                            var hWndChild = new System.Windows.Interop.WindowInteropHelper(child).Handle;
 
-                        NativeMethods.SetWindowAsChild(handle, hWndChild);
-                        this.BrowserPanels.Add(dock, hWndChild);
+                            NativeMethods.SetWindowAsChild(handle, hWndChild);
+                            this.BrowserPanels.Add(dock, hWndChild);
 
-                        System.Threading.Monitor.Pulse(SyncObject);
-                    }
+                            System.Threading.Monitor.Pulse(SyncObject);
+                        }
 
-                    System.Windows.Threading.Dispatcher.Run();
-                });
+                        System.Windows.Threading.Dispatcher.Run();
+                    });
 
-                thread.SetApartmentState(System.Threading.ApartmentState.STA);
-                thread.IsBackground = true;
-                thread.Start();
-                System.Threading.Monitor.Wait(SyncObject);
+                    thread.SetApartmentState(System.Threading.ApartmentState.STA);
+                    thread.IsBackground = true;
+                    thread.Start();
+                    System.Threading.Monitor.Wait(SyncObject);
+                } else {
+                    // WebView2 should only be accessed from a UI thread, and a given WebView2 should only be created and accessed on a single thread
+                    // https://docs.microsoft.com/en-us/microsoft-edge/webview2/concepts/threading-model
+                    child = CreateBrowser(modern);
+                    child.Show();
+
+                    var hWndChild = new System.Windows.Interop.WindowInteropHelper(child).Handle;
+
+                    NativeMethods.SetWindowAsChild(handle, hWndChild);
+                    this.BrowserPanels.Add(dock, hWndChild);
+                }
 
                 this.BrowserWindows.Add(item, child);
                 this.BrowserTabControl.Items.Add(item);

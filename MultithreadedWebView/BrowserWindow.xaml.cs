@@ -41,6 +41,7 @@ namespace MultithreadedWebView
         public event EventHandler<BrowserClosedEventArgs> BrowserClosed;
         public event EventHandler<DocumentTitleChangedEventArgs> DocumentTitleChanged;
         public event EventHandler<NewWindowRequestedEventArgs> NewWindowRequested;
+        public event EventHandler<EventArgs> WebViewFirstInitialized;
 
         public BrowserWindow(bool modern)
         {
@@ -109,6 +110,10 @@ namespace MultithreadedWebView
             ((Microsoft.Web.WebView2.Wpf.WebView2)sender).CoreWebView2.DocumentTitleChanged += ModernBrowser_DocumentTitleChanged;
             ((Microsoft.Web.WebView2.Wpf.WebView2)sender).CoreWebView2.NewWindowRequested += ModernBrowser_NewWindowRequested;
             ((Microsoft.Web.WebView2.Wpf.WebView2)sender).Visibility = Visibility.Visible;
+
+            if (WebViewFirstInitialized != null) {
+                WebViewFirstInitialized(sender, e);
+            }
         }
 
         private void ModernBrowser_WindowCloseRequested(object sender, object e)
@@ -142,16 +147,15 @@ namespace MultithreadedWebView
             OnNewWindowRequested(args);
 
             if ((args.Handled == true) && (args.NewWindow != null)) {
-                args.NewWindow.Dispatcher.Invoke(new Action(() => {
+                args.NewWindow.WebViewFirstInitialized += (s, ev) => {
                     try {
-                        e.NewWindow = args.NewWindow.ModernBrowser.CoreWebView2;
+                        e.NewWindow = ((Microsoft.Web.WebView2.Wpf.WebView2)s).CoreWebView2;
                         e.Handled = true;
+                        deferral.Complete();
                     } catch (Exception ex) {
                         MessageBox.Show(ex.ToString());
                     }
-                }));
-
-                deferral.Complete();
+                };
             }
         }
 
