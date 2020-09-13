@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MultithreadedWebView
 {
@@ -54,8 +44,9 @@ namespace MultithreadedWebView
 
                 this.ModernBrowser = new Microsoft.Web.WebView2.Wpf.WebView2();
                 this.ModernBrowser.CoreWebView2Ready += ModernBrowser_CoreWebView2Ready;
-                this.ModernBrowser.Source = new Uri("about:blank");
                 this.ModernBrowser.Visibility = Visibility.Hidden;
+
+                InitializeWebView2Async();
 
                 host.Children.Add(this.ModernBrowser);
                 this.AddChild(host);
@@ -101,6 +92,13 @@ namespace MultithreadedWebView
         {
             if (this.NewWindowRequested != null) {
                 NewWindowRequested(this, e);
+            }
+        }
+
+        private async void InitializeWebView2Async()
+        {
+            if (this.ModernBrowser != null) {
+                await this.ModernBrowser.EnsureCoreWebView2Async();
             }
         }
 

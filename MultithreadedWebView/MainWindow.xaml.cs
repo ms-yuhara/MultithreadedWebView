@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MultithreadedWebView
 {
@@ -58,6 +49,8 @@ namespace MultithreadedWebView
             while (this.BrowserTabControl.Items.Count > 0) {
                 RemoveTabWindow((TabItem)this.BrowserTabControl.Items[0]);
             }
+
+            Application.Current.Shutdown();
         }
 
         private void Url_KeyDown(object sender, KeyEventArgs e)
@@ -188,9 +181,8 @@ namespace MultithreadedWebView
                     target.Dispatcher.Invoke(new Action(() => {
                         target.BrowserClosed -= BrowserWindow_BrowserClosed;
 
-                        if (target.Modern) {
-                            target.ModernBrowser.Dispose();
-                        } else {
+                        if (!target.Modern) {
+                            target.ClassicBrowser.Stop();
                             target.ClassicBrowser.Dispose();
                         }
 
